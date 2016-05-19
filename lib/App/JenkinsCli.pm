@@ -15,6 +15,8 @@ use List::Util;
 #use List::MoreUtils;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
+use Jenkins::API;
+use Term::ANSIColor qw/colored/;
 
 our $VERSION = version->new('0.0.1');
 
@@ -43,11 +45,10 @@ sub list {
     my $jenkins = $self->jenkins();
 
     my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 1 } });
-    my %colour_map = (
-        aborted  => ['grey18', 'on_grey0'],
-        disabled => ['grey22'],
-        notbuilt => ['grey12'],
-    );
+    my %colour_map = map {
+            ( $_ => [ split /\s+/, $opt->colors->{$_} ] )
+        }
+        keys %{ $opt->colors };
 
     for my $job (sort @{ $data->{jobs} }) {
         next if $query && $job->{name} !~ /$query/;

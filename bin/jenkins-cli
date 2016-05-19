@@ -12,8 +12,7 @@ use Getopt::Alt;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use FindBin qw/$Bin/;
-use Jenkins::API;
-use Term::ANSIColor qw/colored/;
+use App::JenkinsCli;
 
 our $VERSION = version->new('0.0.1');
 my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
@@ -28,7 +27,11 @@ sub main {
             conf_prefix => '.',
             helper      => 1,
             default     => {
-                test => 0,
+                colors => {
+                    aborted  => 'grey18 on_grey0',
+                    disabled => 'grey22',
+                    notbuilt => 'grey12',
+                },
             },
             sub_command => [
                 ls    => [],
@@ -37,9 +40,10 @@ sub main {
             ],
         },
         [
-            'base_url|b=s',
+            'base_url|base-url|b=s',
             'username|U=s',
             'password|P=s',
+            'colors|c=s%',
             'test|T!',
         ],
     );

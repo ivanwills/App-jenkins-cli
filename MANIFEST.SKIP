@@ -60,4 +60,5 @@ Debian_CPANTS.txt
 \bnytprof*
 
 # Avoid archives of this distribution
-\bApp-jenkins-cli-[\d\.\_]+
+\bApp-JenkinsCli-[\d\.\_]+
+^MYMETA\.json$

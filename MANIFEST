@@ -1,7 +1,9 @@
-
+.editorconfig
+.vtide.yml
+bin/jenkins-cli
 Build.PL
 Changes
-lib/App/jenkins-cli.pm
+lib/App/JenkinsCli.pm
 LICENSE
 MANIFEST
 META.json

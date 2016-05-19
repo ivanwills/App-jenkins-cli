@@ -58,5 +58,6 @@ subtest 'Changes' => sub {
     );
 };
 
-module_boilerplate_ok('lib/App/jenkins-cli.pm');
+module_boilerplate_ok('bin/jenkins-cli');
+module_boilerplate_ok('lib/App/JenkinsCli.pm');
 done_testing();

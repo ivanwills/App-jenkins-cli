@@ -6,8 +6,8 @@ use Test::More;
 use Test::Warnings;
 
 BEGIN {
-    use_ok( 'App::jenkins-cli' );
+    use_ok( 'App::JenkinsCli' );
 }
 
-diag( "Testing App::jenkins-cli $App::jenkins-cli::VERSION, Perl $], $^X" );
+diag( "Testing App::JenkinsCli $App::JenkinsCli::VERSION, Perl $], $^X" );
 done_testing();

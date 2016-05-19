@@ -1,12 +1,12 @@
-package App::jenkins-cli;
+package App::JenkinsCli;
 
-# Created on: 2016-05-20 07:46:57
+# Created on: 2016-05-20 07:52:28
 # Create by:  Ivan Wills
 # $Id$
 # $Revision$, $HeadURL$, $Date$
 # $Revision$, $Source$, $Date$
 
-use strict;
+use Moo;
 use warnings;
 use version;
 use Carp;
@@ -15,26 +15,69 @@ use List::Util;
 #use List::MoreUtils;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-use base qw/Some::Thing/;
 
+our $VERSION = version->new('0.0.1');
 
-our $VERSION     = version->new('0.0.1');
-our @EXPORT_OK   = qw//;
-our %EXPORT_TAGS = ();
-#our @EXPORT      = qw//;
+has [qw/base_url api_key api_pass test/] => (
+    is => 'rw',
+);
+has jenkins => (
+    is   => 'rw',
+    lazy => 1,
+    builder => '_jenkins',
+);
 
-sub new {
-	my $caller = shift;
-	my $class  = ref $caller ? ref $caller : $caller;
-	my %param  = @_;
-	my $self   = \%param;
+sub _jenkins {
+    my ($self) = @_;
 
-	bless $self, $class;
+    return Jenkins::API->new({
+        base_url => $self->base_url,
+        api_key  => $self->api_key,
+        api_pass => $self->api_pass,
+    });
+};
 
-	return $self;
+sub ls { shift->list(@_) }
+sub list {
+    my ($self, $opt, $query) = @_;
+    my $jenkins = $self->jenkins();
+
+    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 1 } });
+    my %colour_map = (
+        aborted  => ['grey18', 'on_grey0'],
+        disabled => ['grey22'],
+        notbuilt => ['grey12'],
+    );
+
+    for my $job (sort @{ $data->{jobs} }) {
+        next if $query && $job->{name} !~ /$query/;
+        my $name = $job->{name};
+        my $extra = '';
+
+        if ( $job->{color} =~ s/_anime// ) {
+            $extra = '*';
+        }
+
+        # map "jenkins" colours to real colours
+        my $color = $colour_map{$job->{color}} || [$job->{color}];
+
+        print colored($color, $name), " $extra\n";
+    }
+
+    return;
 }
 
+sub start {
+    my ($self, $opt, $job, @extra) = @_;
+    my $jenkins = $self->jenkins();
 
+    _error("Must start build with job name!\n") if !$job;
+
+    my $result = $jenkins->trigger_build($job);
+    warn Dumper $result;
+
+    return;
+}
 
 1;
 
@@ -42,16 +85,16 @@ __END__
 
 =head1 NAME
 
-App::jenkins-cli - <One-line description of module's purpose>
+App::JenkinsCli - <One-line description of module's purpose>
 
 =head1 VERSION
 
-This documentation refers to App::jenkins-cli version 0.0.1
+This documentation refers to App::JenkinsCli version 0.0.1
 
 
 =head1 SYNOPSIS
 
-   use App::jenkins-cli;
+   use App::JenkinsCli;
 
    # Brief but working code example(s) here showing the most common usage(s)
    # This section will be as far as many users bother reading, so make it as
@@ -84,7 +127,7 @@ context to help them understand the methods that are subsequently described.
 
 Param: C<$search> - type (detail) - description
 
-Return: App::jenkins-cli -
+Return: App::JenkinsCli -
 
 Description:
 

@@ -17,8 +17,7 @@ use App::JenkinsCli;
 our $VERSION = version->new('0.0.1');
 my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
 
-main();
-exit 0;
+exit main();
 
 sub main {
     my ($options, $cmd, $opt) = get_options(
@@ -44,6 +43,7 @@ sub main {
             'username|U=s',
             'password|P=s',
             'colors|c=s%',
+            'force|f!',
             'test|T!',
         ],
     );
@@ -56,9 +56,7 @@ sub main {
         test     => $options->test,
     );
 
-    $jenkins->$cmd($options, @ARGV);
-
-    return;
+    return $jenkins->$cmd($options, @ARGV) || 0;
 }
 
 sub _error {

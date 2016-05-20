@@ -74,7 +74,24 @@ sub start {
 
     _error("Must start build with job name!\n") if !$job;
 
-    my $result = $jenkins->trigger_build($job);
+    my $result = $jenkins->_json_api(['job', $job, 'api', 'json']);
+    if ( ! $result->{buildable} ) {
+        warn "Job is not buildable!\n";
+        return 1;
+    }
+    if ( $result->{inQueue} && ! $opt->force ) {
+        warn $result->{queueItem}{why} . "\n";
+        warn "View at $result->{url}\n";
+        return 0;
+    }
+    die "Not yet!\n";
+
+    $jenkins->trigger_build($job);
+
+    sleep 1;
+
+    $result = $jenkins->_json_api(['job', $job, 'api', 'json']);
+    print "View at $result->{url}\n";
     warn Dumper $result;
 
     return;

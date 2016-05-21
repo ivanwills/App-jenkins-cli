@@ -122,6 +122,16 @@ This documentation refers to App::JenkinsCli version 0.0.1
 
 =head1 SUBROUTINES/METHODS
 
+=head2 C<ls ($opt, $query)>
+
+=head2 C<list ($opt, $query)>
+
+List all jobs, optionally filtering with C<$query>
+
+=head2 C<start ($opt, $job)>
+
+Start C<$jpb>
+
 =head1 DIAGNOSTICS
 
 =head1 CONFIGURATION AND ENVIRONMENT

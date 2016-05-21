@@ -97,6 +97,30 @@ sub start {
     return;
 }
 
+sub delete {
+    my ($self, $opt, $job, @extra) = @_;
+
+    _error("Must start build with job name!\n") if !$job;
+
+    $self->jenkins->delete_project($job);
+
+    return;
+}
+
+sub conf { shift->config(@_) }
+sub config {
+    my ($self, $opt, $job, @extra) = @_;
+    my $jenkins = $self->jenkins();
+
+    _error("Must start build with job name!\n") if !$job;
+
+    my $result = $jenkins->_json_api(['job', $job, 'api', 'json']);
+
+    print "$job\n";
+
+    return;
+}
+
 1;
 
 __END__

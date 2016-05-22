@@ -107,8 +107,7 @@ sub delete {
     return;
 }
 
-sub conf { shift->config(@_) }
-sub config {
+sub status {
     my ($self, $opt, $job, @extra) = @_;
     my $jenkins = $self->jenkins();
 
@@ -117,6 +116,18 @@ sub config {
     my $result = $jenkins->_json_api(['job', $job, 'api', 'json']);
 
     print "$job\n";
+
+    return;
+}
+
+sub conf { shift->config(@_) }
+sub config {
+    my ($self, $opt, $job, @extra) = @_;
+    my $jenkins = $self->jenkins();
+
+    _error("Must provide job name to get it's configuration!\n") if !$job;
+
+    print $jenkins->project_config($job);
 
     return;
 }

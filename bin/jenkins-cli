@@ -33,9 +33,13 @@ sub main {
                 },
             },
             sub_command => [
-                ls    => [],
-                list  => [],
-                start => [],
+                ls     => [],
+                list   => [],
+                start  => [],
+                delete => [],
+                status => [],
+                conf   => [],
+                config => [],
             ],
         },
         [

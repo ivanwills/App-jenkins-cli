@@ -193,9 +193,41 @@ Delete C<$jpb>
 
 Status of C<$jpb>
 
+=head2 C<conf ($opt, $job)>
+
 =head2 C<config ($opt, $job)>
 
 Show the config of C<$jpb>
+
+=head2 C<queue ($opt)>
+
+Show the queue of running jobs
+
+=head1 ATTRIBUTES
+
+=over 4
+
+=item base_url
+
+The base URL of Jenkins
+
+=item api_key
+
+The username to access jenkins by
+
+=item api_pass
+
+The password to access jenkins by
+
+=item test
+
+Flag to not actually perform changes
+
+=item jenkins
+
+Internal L<Jenkins::API> object
+
+=back
 
 =head1 DIAGNOSTICS
 

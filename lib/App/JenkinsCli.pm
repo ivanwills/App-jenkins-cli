@@ -132,6 +132,24 @@ sub config {
     return;
 }
 
+sub queue {
+    my ($self, $opt, $job, @extra) = @_;
+    my $jenkins = $self->jenkins();
+
+    my $queue = $jenkins->build_queue();
+
+    if ( @{ $queue->{items} } ) {
+        for my $item (@{ $queue->{items} }) {
+            print $item;
+        }
+    }
+    else {
+        print "The queue is empty\n";
+    }
+
+    return;
+}
+
 1;
 
 __END__

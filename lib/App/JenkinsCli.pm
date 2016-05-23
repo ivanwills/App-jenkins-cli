@@ -167,6 +167,18 @@ List all jobs, optionally filtering with C<$query>
 
 Start C<$jpb>
 
+=head2 C<delete ($opt, $job)>
+
+Delete C<$jpb>
+
+=head2 C<status ($opt, $job)>
+
+Status of C<$jpb>
+
+=head2 C<config ($opt, $job)>
+
+Show the config of C<$jpb>
+
 =head1 DIAGNOSTICS
 
 =head1 CONFIGURATION AND ENVIRONMENT

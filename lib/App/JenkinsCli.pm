@@ -8,17 +8,13 @@ package App::JenkinsCli;
 
 use Moo;
 use warnings;
-use version;
 use Carp;
-use Scalar::Util;
-use List::Util;
-#use List::MoreUtils;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Jenkins::API;
 use Term::ANSIColor qw/colored/;
 
-our $VERSION = version->new('0.0.1');
+our $VERSION = "0.001";
 
 has [qw/base_url api_key api_pass test/] => (
     is => 'rw',

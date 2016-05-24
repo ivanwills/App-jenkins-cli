@@ -8,7 +8,10 @@ my $builder = Module::Build->new(
     dist_author       => 'Ivan Wills <ivan.wills@gmail.com>',
     dist_version_from => 'lib/App/JenkinsCli.pm',
     requires          => {
-        'perl'             => 5.008,
+        'perl'           => '5.006',
+        'Getopt::Alt'    => '0.3.8',
+        'Jenkins::API'   => '0.11',
+        'Moo'            => '2.0',
     },
     build_requires => {
         'Test::More'     => 0,

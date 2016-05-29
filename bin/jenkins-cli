@@ -55,9 +55,9 @@ sub main {
 
     # do stuff here
     my $jenkins = App::JenkinsCli->new(
-        base_url => $options->base_url,
-        api_key  => $options->username,
-        api_pass => $options->password,
+        base_url => $options->base_url || _error('Missing base_url!'),
+        api_key  => $options->username || _error('Missing username!'),
+        api_pass => $options->password || _error('Missing password!'),
         test     => $options->test,
     );
 

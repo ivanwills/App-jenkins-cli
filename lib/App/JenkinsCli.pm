@@ -241,6 +241,10 @@ Please report problems to Ivan Wills (ivan.wills@gmail.com).
 
 Patches are welcome.
 
+=head1 ALSO SEE
+
+Inspired by https://github.com/Netflix-Skunkworks/jenkins-cli
+
 =head1 AUTHOR
 
 Ivan Wills - (ivan.wills@gmail.com)

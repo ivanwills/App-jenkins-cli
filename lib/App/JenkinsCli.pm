@@ -146,6 +146,24 @@ sub queue {
     return;
 }
 
+sub create {
+    my ($self, $opt, $job, $config, @extra) = @_;
+    my $jenkins = $self->jenkins();
+
+
+
+    return;
+}
+
+sub load {
+    my ($self, $opt, $job, $config, @extra) = @_;
+    my $jenkins = $self->jenkins();
+
+    print Dumper $jenkins->load_statistics();
+
+    return;
+}
+
 1;
 
 __END__

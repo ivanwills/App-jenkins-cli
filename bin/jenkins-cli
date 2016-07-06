@@ -50,6 +50,7 @@ sub main {
             'colors|c=s%',
             'force|f!',
             'test|T!',
+            'verbose|v+',
         ],
     );
 

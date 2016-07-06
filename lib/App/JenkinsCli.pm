@@ -101,11 +101,14 @@ sub start {
 }
 
 sub delete {
-    my ($self, $opt, $job, @extra) = @_;
+    my ($self, $opt, @jobs) = @_;
 
-    _error("Must start build with job name!\n") if !$job;
+    _error("Must start build with job name!\n") if !@jobs;
 
-    $self->jenkins->delete_project($job);
+    for my $job (@jobs) {
+        my $result = $self->jenkins->delete_project($job);
+        print $result ? "Deleted $job\n" : "Errored deleting $job\n";
+    }
 
     return;
 }

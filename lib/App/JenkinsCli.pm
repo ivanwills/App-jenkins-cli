@@ -58,7 +58,7 @@ sub list {
         if ( $opt->{verbose} ) {
             eval {
                 my $details = $jenkins->_json_api(['job', $job->{name}, qw/api json/], { extra_params => { depth => 1 } });
-                $extra .= "\t" . localtime $details->{lastBuild}{timestamp} / 1000;
+                $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
             };
         }
 

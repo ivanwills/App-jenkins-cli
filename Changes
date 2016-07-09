@@ -1,5 +1,31 @@
 Revision history for App-jenkins-cli
 
 0.001   2016-05-20
-        First version, released on an unsuspecting world.
-
+        Fixed version number (Ivan Wills)
+        Added catching missing last build timestamp (Ivan Wills)
+        Changed delete to allow the deleting of more than one build at time (Ivan Wills)
+        Added --verbose option to show date of last build when listing (Ivan Wills)
+        Fixed --verbose (Ivan Wills)
+        More commands (Ivan Wills)
+        Tagging for future CPAN release (Ivan Wills)
+        Added ALSO SEE section (Ivan Wills)
+        Added erroring when required params are missing (Ivan Wills)
+        Updated manifest (Ivan Wills)
+        Updated the version (Ivan Wills)
+        Added missing dependencies (Ivan Wills)
+        Added missing pod (Ivan Wills)
+        Added queue command/method (Ivan Wills)
+        Added missing documentation (Ivan Wills)
+        Enabled new commands (Ivan Wills)
+        Renamed config to status and added config (Ivan Wills)
+        Added deleting getting a jobs config (Ivan Wills)
+        Added documentation for actions (Ivan Wills)
+        Making sure that jobs are only triggered when able to (Ivan Wills)
+        Getting return codes working (Ivan Wills)
+        Fixed colours (and made configurable) (Ivan Wills)
+        More fixes to get build ready (Ivan Wills)
+        Fixed renamed lib (Ivan Wills)
+        New script to run the jenkins cli (Ivan Wills)
+        Minor fixes (Ivan Wills)
+        Renamed to be CPAN compatible (Ivan Wills)
+        Initial commit (Ivan Wills)

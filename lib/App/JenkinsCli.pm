@@ -227,6 +227,14 @@ Show the config of C<$jpb>
 
 Show the queue of running jobs
 
+=head2 C<create ($opt, $job)>
+
+Create a new Jenkins job
+
+=head2 load ($opt)>
+
+Show the load stats for the server
+
 =head1 ATTRIBUTES
 
 =over 4

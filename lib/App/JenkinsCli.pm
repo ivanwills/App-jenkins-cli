@@ -24,6 +24,23 @@ has jenkins => (
     lazy => 1,
     builder => '_jenkins',
 );
+has colours => (
+    is       => 'rw',
+    required => 1,
+);
+has colour_map => (
+    is      => 'rw',
+    lazy    => 1,
+    default => sub {
+        my ($self) = @_;
+        return {
+            map {
+                ( $_ => [ split /\s+/, $self->colours->{$_} ] )
+            }
+            keys %{ $self->colours }
+        };
+    },
+);
 
 sub _jenkins {
     my ($self) = @_;
@@ -41,10 +58,6 @@ sub list {
     my $jenkins = $self->jenkins();
 
     my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 1 } });
-    my %colour_map = map {
-            ( $_ => [ split /\s+/, $opt->colors->{$_} ] )
-        }
-        keys %{ $opt->colors };
 
     for my $job (sort @{ $data->{jobs} }) {
         next if $query && $job->{name} !~ /$query/;
@@ -63,7 +76,7 @@ sub list {
         }
 
         # map "jenkins" colours to real colours
-        my $color = $colour_map{$job->{color}} || [$job->{color}];
+        my $color = $self->colour_map->{$job->{color}} || [$job->{color}];
 
         print colored($color, $name), " $extra\n";
     }

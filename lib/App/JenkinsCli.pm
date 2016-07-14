@@ -132,9 +132,24 @@ sub status {
 
     _error("Must start build with job name!\n") if !$job;
 
-    my $result = $jenkins->_json_api(['job', $job, 'api', 'json']);
+    my $result = $jenkins->_json_api(['job', $job, 'api', 'json'], { extra_params => { depth => 1 } });
 
-    print "$job\n";
+    my $color = $self->colour_map->{$result->{color}} || [$result->{color}];
+    print colored($color, $job), "\n";
+
+    if ($opt->verbose) {
+        for my $build (@{ $result->{builds} }) {
+            print "$build->{displayName}\t$build->{result}\t";
+            if ( $opt->verbose > 1 ) {
+                for my $action (@{ $build->{actions} }) {
+                    if ( $action->{lastBuiltRevision} ) {
+                        print $action->{lastBuiltRevision}{SHA1};
+                    }
+                }
+            }
+            print "\n";
+        }
+    }
 
     return;
 }

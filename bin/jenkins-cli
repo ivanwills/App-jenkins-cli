@@ -60,6 +60,7 @@ sub main {
         api_key  => $options->username || _error('Missing username!'),
         api_pass => $options->password || _error('Missing password!'),
         test     => $options->test,
+        colours  => $options->colors,
     );
 
     return $jenkins->$cmd($options, @ARGV) || 0;

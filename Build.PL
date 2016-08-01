@@ -12,6 +12,9 @@ my $builder = Module::Build->new(
         'Getopt::Alt'    => '0.3.8',
         'Jenkins::API'   => '0.11',
         'Moo'            => '2.0',
+        'Path::Tiny'     => '0.076',
+        'XML::LibXML'    => '2.0',
+        'XML::LibXSLT'   => '1.90',
     },
     build_requires => {
         'Test::More'     => 0,

@@ -41,6 +41,7 @@ sub main {
                 conf   => [],
                 config => [],
                 queue  => [],
+                change => [],
             ],
         },
         [

@@ -202,6 +202,44 @@ sub load {
     return;
 }
 
+sub change {
+    my ($self, $opt, $query, $xsl) = @_;
+    require XML::LibXML;
+    require XML::LibXSLT;
+
+    my $xslt = XML::LibXSLT->new();
+    my $style_doc = XML::LibXML->load_xml(location => $xsl);
+    my $stylesheet = $xslt->parse_stylesheet($style_doc);
+
+    my $jenkins = $self->jenkins();
+
+    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 0 } });
+
+    my %found;
+    for my $job (sort @{ $data->{jobs} }) {
+        next if $query && $job->{name} !~ /$query/;
+        my $config = $jenkins->project_config($job->{name});
+        my $dom = XML::LibXML->load_xml(string => $config);
+
+        my $results = $stylesheet->transform($dom);
+        my $output  = $stylesheet->output_as_bytes($results);
+
+        warn "Updating $job->{name}\n" if $opt->{verbose};
+        if ($opt->{test}) {
+            print "$output\n";
+        }
+        else {
+            my $success = $jenkins->set_project_config($job->{name}, $output);
+            if (!$success) {
+                warn "Error in updating $job->{name}\n";
+                last;
+            }
+        }
+    }
+
+    return;
+}
+
 1;
 
 __END__

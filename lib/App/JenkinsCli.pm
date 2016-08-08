@@ -297,9 +297,14 @@ Show the queue of running jobs
 
 Create a new Jenkins job
 
-=head2 load ($opt)>
+=head2 C<load ($opt)>
 
 Show the load stats for the server
+
+=head2 C<change ($opt, $query, $xsl)>
+
+Run the XSLT file (C<$xsl>) over each job matching C<$query> to generate a
+new config which is then sent back to Jenkins.
 
 =head1 ATTRIBUTES
 

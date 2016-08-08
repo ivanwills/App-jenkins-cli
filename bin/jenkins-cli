@@ -41,7 +41,9 @@ sub main {
                 conf   => [],
                 config => [],
                 queue  => [],
-                change => [],
+                change => [
+                    'test|T!',
+                ],
             ],
         },
         [

@@ -204,20 +204,12 @@ sub load {
 
 sub change {
     my ($self, $opt, $query, $xsl) = @_;
-    require XML::LibXML;
-    require XML::LibXSLT;
-
-    my $xslt = XML::LibXSLT->new();
-    my $style_doc = XML::LibXML->load_xml(location => $xsl);
-    my $stylesheet = $xslt->parse_stylesheet($style_doc);
 
     my $jenkins = $self->jenkins();
 
-    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 0 } });
+    $self->_xslt_actions($opt, $query, $xsl, sub {
+        my ($stylesheet, $job) = @_;
 
-    my %found;
-    for my $job (sort @{ $data->{jobs} }) {
-        next if $query && $job->{name} !~ /$query/;
         my $config = $jenkins->project_config($job->{name});
         my $dom = XML::LibXML->load_xml(string => $config);
 
@@ -235,6 +227,28 @@ sub change {
                 last;
             }
         }
+    });
+
+    return;
+}
+
+sub _xslt_actions {
+    my ($self, $opt, $query, $xsl, $action) = @_;
+    require XML::LibXML;
+    require XML::LibXSLT;
+
+    my $xslt = XML::LibXSLT->new();
+    my $style_doc = XML::LibXML->load_xml(location => $xsl);
+    my $stylesheet = $xslt->parse_stylesheet($style_doc);
+
+    my $jenkins = $self->jenkins();
+
+    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 0 } });
+
+    my %found;
+    for my $job (sort @{ $data->{jobs} }) {
+        next if $query && $job->{name} !~ /$query/;
+        $action->($stylesheet, $job);
     }
 
     return;

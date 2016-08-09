@@ -13,6 +13,8 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Jenkins::API;
 use Term::ANSIColor qw/colored/;
+use File::ShareDir qw/dist_dir/;
+use Path::Tiny;
 
 our $VERSION = "0.001";
 
@@ -202,13 +204,48 @@ sub load {
     return;
 }
 
+sub enable {
+    my ($self, $opt, $query) = @_;
+
+    my $xsl = path(dist_dir('App-JenkinsCli'), 'enable.xsl');
+    $self->_xslt_actions($opt, $query, $xsl);
+
+    return;
+}
+
+sub disable {
+    my ($self, $opt, $query) = @_;
+
+    my $xsl = path(dist_dir('App-JenkinsCli'), 'disable.xsl');
+    $self->_xslt_actions($opt, $query, $xsl);
+
+    return;
+}
+
 sub change {
     my ($self, $opt, $query, $xsl) = @_;
 
+    $self->_xslt_actions($opt, $query, $xsl);
+
+    return;
+}
+
+sub _xslt_actions {
+    my ($self, $opt, $query, $xsl) = @_;
+    require XML::LibXML;
+    require XML::LibXSLT;
+
+    my $xslt = XML::LibXSLT->new();
+    my $style_doc = XML::LibXML->load_xml(location => $xsl);
+    my $stylesheet = $xslt->parse_stylesheet($style_doc);
+
     my $jenkins = $self->jenkins();
 
-    $self->_xslt_actions($opt, $query, $xsl, sub {
-        my ($stylesheet, $job) = @_;
+    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 0 } });
+
+    my %found;
+    for my $job (sort @{ $data->{jobs} }) {
+        next if $query && $job->{name} !~ /$query/;
 
         my $config = $jenkins->project_config($job->{name});
         my $dom = XML::LibXML->load_xml(string => $config);
@@ -227,28 +264,6 @@ sub change {
                 last;
             }
         }
-    });
-
-    return;
-}
-
-sub _xslt_actions {
-    my ($self, $opt, $query, $xsl, $action) = @_;
-    require XML::LibXML;
-    require XML::LibXSLT;
-
-    my $xslt = XML::LibXSLT->new();
-    my $style_doc = XML::LibXML->load_xml(location => $xsl);
-    my $stylesheet = $xslt->parse_stylesheet($style_doc);
-
-    my $jenkins = $self->jenkins();
-
-    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 0 } });
-
-    my %found;
-    for my $job (sort @{ $data->{jobs} }) {
-        next if $query && $job->{name} !~ /$query/;
-        $action->($stylesheet, $job);
     }
 
     return;

@@ -9,6 +9,7 @@ my $builder = Module::Build->new(
     dist_version_from => 'lib/App/JenkinsCli.pm',
     requires          => {
         'perl'           => '5.006',
+        'File::ShareDir' =>  0,
         'Getopt::Alt'    => '0.3.8',
         'Jenkins::API'   => '0.11',
         'Moo'            => '2.0',
@@ -19,6 +20,11 @@ my $builder = Module::Build->new(
     build_requires => {
         'Test::More'     => 0,
         'Test::Warnings' => 0,
+    },
+    share_dir => {
+        dist => [
+            'xslt',
+        ],
     },
     add_to_cleanup     => [ 'App-JenkinsCli-*' ],
     create_license     => 1,

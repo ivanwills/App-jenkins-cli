@@ -29,6 +29,7 @@ add_stopwords(qw/
     NSW
     Hornsby
     Param
+    colours
     Jenkins
     jenkins
     cli

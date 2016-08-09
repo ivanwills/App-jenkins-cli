@@ -302,21 +302,29 @@ List all jobs, optionally filtering with C<$query>
 
 =head2 C<start ($opt, $job)>
 
-Start C<$jpb>
+Start C<$job>
 
 =head2 C<delete ($opt, $job)>
 
-Delete C<$jpb>
+Delete C<$job>
 
 =head2 C<status ($opt, $job)>
 
-Status of C<$jpb>
+Status of C<$job>
+
+=head2 C<enable ($opt, $job)>
+
+enable C<$job>
+
+=head2 C<disable ($opt, $job)>
+
+disable C<$job>
 
 =head2 C<conf ($opt, $job)>
 
 =head2 C<config ($opt, $job)>
 
-Show the config of C<$jpb>
+Show the config of C<$job>
 
 =head2 C<queue ($opt)>
 
@@ -358,6 +366,10 @@ Flag to not actually perform changes
 =item jenkins
 
 Internal L<Jenkins::API> object
+
+=item colours
+
+Mapping of Jenkins states to L<Term::ANSIColor>s
 
 =back
 

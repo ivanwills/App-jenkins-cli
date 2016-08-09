@@ -275,7 +275,7 @@ __END__
 
 =head1 NAME
 
-App::JenkinsCli - Comamndline tool for interacting with Jenkins
+App::JenkinsCli - Command line tool for interacting with Jenkins
 
 =head1 VERSION
 

@@ -1,6 +1,8 @@
 bin/jenkins-cli
 Build.PL
 Changes
+example/change.xsl
+example/jenkins.xml
 lib/App/JenkinsCli.pm
 LICENSE
 MANIFEST
@@ -16,3 +18,5 @@ t/perlcriticrc
 t/pod-coverage.t
 t/pod.t
 t/spelling.t
+xslt/disable.xsl
+xslt/enable.xsl

@@ -190,7 +190,7 @@ sub create {
     my ($self, $opt, $job, $config, @extra) = @_;
     my $jenkins = $self->jenkins();
 
-
+    $jenkins->create_job($job, $config);
 
     return;
 }

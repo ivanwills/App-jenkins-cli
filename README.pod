@@ -13,7 +13,7 @@ Jenkins server via the command line.
 To install this module, run the following commands:
 
     # from CPAN
-    # with cpanm client (http://cpanmin.us/)
+    # with cpanm client (https://cpanmin.us/)
     cpanm [--sudo] App::JenkinsCli
     # with cpan client
     cpan App::JenkinsCli

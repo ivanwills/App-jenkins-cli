@@ -128,6 +128,15 @@ This documentation refers to jenkins-cli version 0.0.1
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
+You can save your configuration into C<~/.jenkins-cli.yml so that you don't
+have to enter them each time. The following is an example of what the file
+looks like:
+
+  ---
+  base_url: http://localhost:8080/
+  username: admin
+  password: my-secrent-password
+
 =head1 DEPENDENCIES
 
 =head1 INCOMPATIBILITIES

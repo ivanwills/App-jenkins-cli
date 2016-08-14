@@ -1,5 +1,27 @@
 Revision history for App-jenkins-cli
 
+0.002   2016-08-14
+        Updating for release of version 0.002
+        Fixed POD (Ivan Wills)
+        Fixed URL (Ivan Wills)
+        Added more documentation about how to use jenkins-cli for github (Ivan Wills)
+        Added documentation about configuration file (Ivan Wills)
+        Fixing documentation (Ivan Wills)
+        Added missing implementation for job creation (Ivan Wills)
+        Fixed missing POD for methods (Ivan Wills)
+        Fixed spelling (Ivan Wills)
+        Added files missing from the manifest (Ivan Wills)
+        Adding in enable/disable actions (Ivan Wills)
+        Adding dist files (Ivan Wills)
+        Refactored out XSLT actions so I can reuse the code (Ivan Wills)
+        Docs (Ivan Wills)
+        Added missing dependencies (Ivan Wills)
+        Added example config to change (Ivan Wills)
+        Added a change command to perform transformations to job configs (Ivan Wills)
+        Implementing job status output (Ivan Wills)
+        Sending colours to object (Ivan Wills)
+        Moved colour handling to be part of object (Ivan Wills)
+
 0.001   2016-05-20
         Fixed version number (Ivan Wills)
         Added catching missing last build timestamp (Ivan Wills)

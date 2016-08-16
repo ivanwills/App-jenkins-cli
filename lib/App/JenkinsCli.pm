@@ -190,7 +190,9 @@ sub create {
     my ($self, $opt, $job, $config, @extra) = @_;
     my $jenkins = $self->jenkins();
 
-    $jenkins->create_job($job, $config);
+    my $success = $jenkins->create_job($job, $config);
+
+    print $success ? "Created $job\n" : "Error creating $job\n";
 
     return;
 }

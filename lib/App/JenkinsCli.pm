@@ -243,27 +243,26 @@ sub _xslt_actions {
     my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 0 } });
 
     my %found;
-    for my $job (sort @{ $data->{jobs} }) {
-        next if $query && $job->{name} !~ /$query/;
+    $self->_action(0, $query, sub {
 
-        my $config = $jenkins->project_config($job->{name});
+        my $config = $jenkins->project_config($_->{name});
         my $dom = XML::LibXML->load_xml(string => $config);
 
         my $results = $stylesheet->transform($dom);
         my $output  = $stylesheet->output_as_bytes($results);
 
-        warn "Updating $job->{name}\n" if $opt->{verbose};
+        warn "Updating $_->{name}\n" if $opt->{verbose};
         if ($opt->{test}) {
             print "$output\n";
         }
         else {
-            my $success = $jenkins->set_project_config($job->{name}, $output);
+            my $success = $jenkins->set_project_config($_->{name}, $output);
             if (!$success) {
-                warn "Error in updating $job->{name}\n";
+                warn "Error in updating $_->{name}\n";
                 last;
             }
         }
-    }
+    });
 
     return;
 }

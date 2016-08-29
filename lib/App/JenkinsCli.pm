@@ -59,29 +59,26 @@ sub list {
     my ($self, $opt, $query) = @_;
     my $jenkins = $self->jenkins();
 
-    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => 1 } });
-
-    for my $job (sort @{ $data->{jobs} }) {
-        next if $query && $job->{name} !~ /$query/;
-        my $name = $job->{name};
+    $self->_action(1, $query, sub {
+        my $name = $_->{name};
         my $extra = '';
 
-        if ( $job->{color} =~ s/_anime// ) {
+        if ( $_->{color} =~ s/_anime// ) {
             $extra = '*';
         }
 
         if ( $opt->{verbose} ) {
             eval {
-                my $details = $jenkins->_json_api(['job', $job->{name}, qw/api json/], { extra_params => { depth => 1 } });
+                my $details = $jenkins->_json_api(['job', $_->{name}, qw/api json/], { extra_params => { depth => 1 } });
                 $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
             };
         }
 
         # map "jenkins" colours to real colours
-        my $color = $self->colour_map->{$job->{color}} || [$job->{color}];
+        my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
 
         print colored($color, $name), " $extra\n";
-    }
+    });
 
     return;
 }
@@ -270,6 +267,23 @@ sub _xslt_actions {
 
     return;
 }
+
+sub _action {
+    my ($self, $depth, $query, $action) = @_;
+    my $jenkins = $self->jenkins();
+
+    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => $depth } });
+
+    for my $job (sort @{ $data->{jobs} }) {
+        next if $query && $job->{name} !~ /$query/;
+        local $_ = $job;
+
+        $action->();
+    }
+
+    return;
+}
+
 
 1;
 

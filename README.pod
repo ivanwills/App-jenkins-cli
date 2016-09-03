@@ -58,7 +58,7 @@ To install this module, run the following commands:
 
 =head1 CONFIGURATION
 
-You can save your configuration into C<~/.jenkins-cli.yml so that you don't
+You can save your configuration into C<~/.jenkins-cli.yml> so that you don't
 have to enter them each time. The following is an example of what the file
 looks like:
 

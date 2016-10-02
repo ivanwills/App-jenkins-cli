@@ -16,7 +16,7 @@ use Term::ANSIColor qw/colored/;
 use File::ShareDir qw/dist_dir/;
 use Path::Tiny;
 
-our $VERSION = "0.002";
+our $VERSION = "0.003";
 
 has [qw/base_url api_key api_pass test/] => (
     is => 'rw',

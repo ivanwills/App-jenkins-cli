@@ -1,5 +1,12 @@
 Revision history for App-jenkins-cli
 
+0.003   2016-10-02
+        Updating for release of version 0.003
+        Fixed POD (Ivan Wills)
+        Further factoring (Ivan Wills)
+        Factored out itterating over jenkins jobs (Ivan Wills)
+        Added missing job creation body (Ivan Wills)
+
 0.002   2016-08-14
         Updating for release of version 0.002
         Fixed POD (Ivan Wills)

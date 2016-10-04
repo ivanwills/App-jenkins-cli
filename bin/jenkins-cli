@@ -114,6 +114,7 @@ This documentation refers to jenkins-cli version 0.0.1
   disable job   Diable a job
   enable job    Enable a job
   wipe job      Wipeout workspace for job (not yet implemented)
+  delete job    Delete the jenkins job
   queue         Show the current job build queue
   history job   Show a jobs build history (not yet implemented)
   config job    Show a config for a job

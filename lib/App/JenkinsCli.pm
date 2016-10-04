@@ -115,7 +115,7 @@ sub start {
 sub delete {
     my ($self, $opt, @jobs) = @_;
 
-    _error("Must start build with job name!\n") if !@jobs;
+    _error("Job name required for deleting jobs!\n") if !@jobs;
 
     for my $job (@jobs) {
         my $result = $self->jenkins->delete_project($job);
@@ -129,7 +129,7 @@ sub status {
     my ($self, $opt, $job, @extra) = @_;
     my $jenkins = $self->jenkins();
 
-    _error("Must start build with job name!\n") if !$job;
+    _error("Job name required to show job status!\n") if !$job;
 
     my $result = $jenkins->_json_api(['job', $job, 'api', 'json'], { extra_params => { depth => 1 } });
 

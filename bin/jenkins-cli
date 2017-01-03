@@ -34,7 +34,9 @@ sub main {
             },
             sub_command => [
                 ls      => [],
-                list    => [],
+                list    => [
+                    'verbose|v+',
+                ],
                 start   => [],
                 delete  => [],
                 status  => [],
@@ -166,3 +168,4 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.
 
 =cut
+

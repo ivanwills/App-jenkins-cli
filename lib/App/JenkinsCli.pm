@@ -72,6 +72,7 @@ sub list {
                 my $details = $jenkins->_json_api(['job', $_->{name}, qw/api json/], { extra_params => { depth => 1 } });
                 $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
             };
+            $name = $self->base_url . 'job/' . $name;
         }
 
         # map "jenkins" colours to real colours

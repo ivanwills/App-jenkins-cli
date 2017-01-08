@@ -3,6 +3,7 @@ Build.PL
 Changes
 example/change.xsl
 example/jenkins.xml
+example/rebuild-to-success
 lib/App/JenkinsCli.pm
 LICENSE
 MANIFEST

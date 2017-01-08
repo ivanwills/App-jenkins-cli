@@ -1,5 +1,17 @@
 Revision history for App-jenkins-cli
 
+0.004   2017-01-08
+        Updating for release of version 0.004
+        Fixed version (Ivan Wills)
+        Updated LICENSE date (Ivan Wills)
+        Added file missing from manifest (Ivan Wills)
+        Example script (Ivan Wills)
+        Added verbose to list options (Ivan Wills)
+        Chagned to show url rather than just the name (Ivan Wills)
+        Fixed error messages (Ivan Wills)
+        Added missing delete documentation (Ivan Wills)
+        Added travice config (Ivan Wills)
+
 0.003   2016-10-02
         Updating for release of version 0.003
         Fixed POD (Ivan Wills)

@@ -204,6 +204,36 @@ sub load {
     return;
 }
 
+sub watch {
+    my ($self, $opt, @jobs) = @_;
+    my $jenkins = $self->jenkins();
+
+    my $query = join '|', @jobs;
+    my $first = 1;
+
+    while (1) {
+        print "\n" if !$first;
+        $first = 0;
+
+        $self->_action(1, $query, sub {
+            my $name = $_->{name};
+            my $extra = '';
+
+            if ( $_->{color} =~ s/_anime// ) {
+                $extra = '*';
+            }
+
+            # map "jenkins" colours to real colours
+            my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
+
+            print colored($color, $name), " $extra\n";
+        });
+        sleep 10;
+    }
+
+    return;
+}
+
 sub enable {
     my ($self, $opt, $query) = @_;
 

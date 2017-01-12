@@ -325,7 +325,7 @@ App::JenkinsCli - Command line tool for interacting with Jenkins
 
 =head1 VERSION
 
-This documentation refers to App::JenkinsCli version 0.0.1
+This documentation refers to App::JenkinsCli version 0.004
 
 =head1 SYNOPSIS
 

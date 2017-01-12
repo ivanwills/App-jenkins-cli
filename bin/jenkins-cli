@@ -48,6 +48,8 @@ sub main {
                 change  => [
                     'test|T!',
                 ],
+                create => [],
+                watch  => [],
             ],
         },
         [
@@ -122,6 +124,7 @@ This documentation refers to jenkins-cli version 0.004
   config job    Show a config for a job
   create job config.xml
                 Create a new job from "config.xml"
+  watch job(s)  Watch a job or jobs status
 
 =head1 DESCRIPTION
 

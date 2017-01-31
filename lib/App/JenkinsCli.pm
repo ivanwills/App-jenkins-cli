@@ -59,27 +59,7 @@ sub list {
     my ($self, $opt, $query) = @_;
     my $jenkins = $self->jenkins();
 
-    $self->_action(1, $query, sub {
-        my $name = $_->{name};
-        my $extra = '';
-
-        if ( $_->{color} =~ s/_anime// ) {
-            $extra = '*';
-        }
-
-        if ( $opt->{verbose} ) {
-            eval {
-                my $details = $jenkins->_json_api(['job', $_->{name}, qw/api json/], { extra_params => { depth => 1 } });
-                $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
-            };
-            $name = $self->base_url . 'job/' . $name;
-        }
-
-        # map "jenkins" colours to real colours
-        my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
-
-        print colored($color, $name), " $extra\n";
-    });
+    $self->_action(1, $query, $self->_ls_job($opt, $jenkins));
 
     return;
 }
@@ -208,27 +188,22 @@ sub watch {
     my ($self, $opt, @jobs) = @_;
     my $jenkins = $self->jenkins();
 
+    $opt->{sleep} ||= 30;
     my $query = join '|', @jobs;
-    my $first = 1;
 
     while (1) {
-        print "\n" if !$first;
-        $first = 0;
+        my $out = '';
+        my $ls = $self->_ls_job($opt, $jenkins, 1);
+        print "\n...\n";
 
         $self->_action(1, $query, sub {
-            my $name = $_->{name};
-            my $extra = '';
-
-            if ( $_->{color} =~ s/_anime// ) {
-                $extra = '*';
-            }
-
-            # map "jenkins" colours to real colours
-            my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
-
-            print colored($color, $name), " $extra\n";
+            $out .= $ls->(@_);
         });
-        sleep 10;
+
+        print "\e[2J\e[0;0H\e[K";
+        print "Jenkins Jobs: ", (join ', ', @jobs), "\n\n";
+        print $out;
+        sleep $opt->{sleep};
     }
 
     return;
@@ -314,6 +289,37 @@ sub _action {
     return;
 }
 
+sub _ls_job {
+    my ($self, $opt, $jenkins, $return) = @_;
+
+    return sub {
+        my $name = $_->{name};
+        my $extra = '';
+
+        if ( $_->{color} =~ s/_anime// ) {
+            $extra = '*';
+        }
+
+        if ( $opt->{verbose} ) {
+            eval {
+                my $details = $jenkins->_json_api(['job', $_->{name}, qw/api json/], { extra_params => { depth => 1 } });
+                $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
+                $extra .= "\t($details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
+            };
+            $name = $self->base_url . 'job/' . $name;
+        }
+
+        # map "jenkins" colours to real colours
+        my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
+
+        my $out = colored($color, $name) . " $extra\n";
+
+        if ($return) {
+            return $out;
+        }
+        print $out;
+    };
+}
 
 1;
 

@@ -192,17 +192,17 @@ sub watch {
     my $query = join '|', @jobs;
 
     while (1) {
-        my $out = '';
+        my @out;
         my $ls = $self->_ls_job($opt, $jenkins, 1);
         print "\n...\n";
 
         $self->_action(1, $query, sub {
-            $out .= $ls->(@_);
+            push @out, $ls->(@_);
         });
 
         print "\e[2J\e[0;0H\e[K";
         print "Jenkins Jobs: ", (join ', ', @jobs), "\n\n";
-        print $out;
+        print sort @out;
         sleep $opt->{sleep};
     }
 

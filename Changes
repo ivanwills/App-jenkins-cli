@@ -1,5 +1,13 @@
 Revision history for App-jenkins-cli
 
+0.005   2017-02-05
+        Updating for release of version 0.005
+        Sorting jobs (Ivan Wills)
+        Split out list to own mehtod (Ivan Wills)
+        Added missing watch help info (Ivan Wills)
+        Fixed version number (Ivan Wills)
+        Adding watch command (Ivan Wills)
+
 0.004   2017-01-08
         Updating for release of version 0.004
         Fixed version (Ivan Wills)

@@ -54,6 +54,14 @@ sub _jenkins {
     });
 };
 
+sub _alpha_num {
+    my $a1 = $a;
+    my $b1 = $b;
+    $a1 =~ s/(\d+)/sprintf "%5d", $1/egxms;
+    $b1 =~ s/(\d+)/sprintf "%5d", $1/egxms;
+    return $a1 cmp $b1;
+}
+
 sub ls { shift->list(@_) }
 sub list {
     my ($self, $opt, $query) = @_;
@@ -279,7 +287,7 @@ sub _action {
 
     my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => $depth } });
 
-    for my $job (sort @{ $data->{jobs} }) {
+    for my $job (sort _alpha_num @{ $data->{jobs} }) {
         next if $query && $job->{name} !~ /$query/;
         local $_ = $job;
 

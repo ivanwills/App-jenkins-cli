@@ -320,7 +320,12 @@ sub _ls_job {
                     }
                 );
                 $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
-                $extra .= "\t($details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
+                if ( $details->{lastBuild}{displayName} && $details->{lastBuild}{builtOn} ) {
+                    $extra .= "\t($details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
+                }
+                else {
+                    $extra .= "\tNever run";
+                }
             };
             $name = $self->base_url . 'job/' . $name;
         }

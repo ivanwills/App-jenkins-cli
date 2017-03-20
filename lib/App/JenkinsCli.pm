@@ -291,10 +291,11 @@ sub _action {
 
 sub _ls_job {
     my ($self, $opt, $jenkins, $return) = @_;
+    my $max = 0;
 
     return sub {
         my $name = $_->{name};
-        my $extra = '';
+        my $extra = ' ';
 
         if ( $_->{color} =~ s/_anime// ) {
             $extra = '*';
@@ -312,7 +313,11 @@ sub _ls_job {
         # map "jenkins" colours to real colours
         my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
 
-        my $out = colored($color, $name) . " $extra\n";
+        if ( length $name > $max ) {
+            $max = length $name;
+        }
+
+        my $out = colored($color, sprintf "% -${max}s", $name) . " $extra\n";
 
         if ($return) {
             return $out;

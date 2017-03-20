@@ -49,8 +49,18 @@ sub main {
                     'test|T!',
                 ],
                 create => [],
-                watch  => [],
+                watch  => [
+                    'sleep|s=i',
+                    'verbose|v+',
+                ],
             ],
+            auto_complete => sub {
+                my ($option, $auto, $errors) = @_;
+                my $sub_command = $option->cmd;
+                if ( $sub_command eq '--' ) {
+                    warn '--';
+                }
+            },
         },
         [
             'base_url|base-url|b=s',
@@ -58,6 +68,7 @@ sub main {
             'password|P=s',
             'colors|c=s%',
             'force|f!',
+            'sleep|s=i',
             'test|T!',
             'verbose|v+',
         ],

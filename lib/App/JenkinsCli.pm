@@ -88,7 +88,6 @@ sub start {
         warn "View at $result->{url}\n";
         return 0;
     }
-    die "Not yet!\n";
 
     $jenkins->trigger_build($job);
 
@@ -96,7 +95,7 @@ sub start {
 
     $result = $jenkins->_json_api(['job', $job, 'api', 'json']);
     print "View at $result->{url}\n";
-    warn Dumper $result;
+    print $result->{queueItem}{why}, "\n" if $result->{queueItem}{why};
 
     return;
 }

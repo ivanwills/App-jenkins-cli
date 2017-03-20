@@ -339,6 +339,10 @@ sub _ls_job {
 
         my $out = colored($color, sprintf "% -${max}s", $name) . " $extra\n";
 
+        if ( $opt->{long} ) {
+            $out = "$_->{color} $out";
+        }
+
         if ($return) {
             return $out;
         }

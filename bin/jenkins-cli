@@ -35,6 +35,7 @@ sub main {
             sub_command => [
                 ls      => [],
                 list    => [
+                    'long|l',
                     'verbose|v+',
                 ],
                 start   => [],
@@ -50,6 +51,7 @@ sub main {
                 ],
                 create => [],
                 watch  => [
+                    'long|l',
                     'sleep|s=i',
                     'verbose|v+',
                 ],
@@ -68,6 +70,7 @@ sub main {
             'password|P=s',
             'colors|c=s%',
             'force|f!',
+            'long|l',
             'sleep|s=i',
             'test|T!',
             'verbose|v+',

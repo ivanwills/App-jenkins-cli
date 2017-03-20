@@ -67,7 +67,7 @@ sub list {
     my ($self, $opt, $query) = @_;
     my $jenkins = $self->jenkins();
 
-    $self->_action(1, $query, $self->_ls_job($opt, $jenkins));
+    $self->_action(0, $query, $self->_ls_job($opt, $jenkins));
 
     return;
 }
@@ -203,13 +203,13 @@ sub watch {
         my $ls = $self->_ls_job($opt, $jenkins, 1);
         print "\n...\n";
 
-        $self->_action(1, $query, sub {
+        $self->_action(0, $query, sub {
             push @out, $ls->(@_);
         });
 
         print "\e[2J\e[0;0H\e[K";
         print "Jenkins Jobs: ", (join ', ', @jobs), "\n\n";
-        print sort @out;
+        print sort _alpha_num @out;
         sleep $opt->{sleep};
     }
 
@@ -310,7 +310,15 @@ sub _ls_job {
 
         if ( $opt->{verbose} ) {
             eval {
-                my $details = $jenkins->_json_api(['job', $_->{name}, qw/api json/], { extra_params => { depth => 1 } });
+                my $details = $jenkins->_json_api(
+                    ['job', $_->{name}, qw/api json/],
+                    {
+                        extra_params => {
+                            depth => 0,
+                            tree => 'lastBuild[timestamp,displayName,builtOn]'
+                        }
+                    }
+                );
                 $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
                 $extra .= "\t($details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
             };

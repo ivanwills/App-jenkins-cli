@@ -36,6 +36,7 @@ has colour_map => (
     default => sub {
         my ($self) = @_;
         return {
+            '' => ['reset'],
             map {
                 ( $_ => [ split /\s+/, $self->colours->{$_} ] )
             }
@@ -304,7 +305,10 @@ sub _ls_job {
         my $name = $_->{name};
         my $extra = ' ';
 
-        if ( $_->{color} =~ s/_anime// ) {
+        if ( ! $_->{color} ) {
+            $_->{color} = '';
+        }
+        elsif ( $_->{color} =~ s/_anime// ) {
             $extra = '*';
         }
 

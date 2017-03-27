@@ -157,7 +157,15 @@ sub config {
 
     _error("Must provide job name to get it's configuration!\n") if !$job;
 
-    print $jenkins->project_config($job);
+    $self->_action(0, $job, sub {
+        my $config = $jenkins->project_config($_->{name});
+        if ( $self->opt->{out} ) {
+            path($self->opt->{out}, "$_->{name}.xml")->spew($config);
+        }
+        else {
+            print $config;
+        }
+    });
 
     return;
 }

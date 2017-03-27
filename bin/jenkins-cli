@@ -42,6 +42,9 @@ sub main {
                 delete  => [],
                 status  => [],
                 conf    => [],
+                config  => [
+                    'out|o=s',
+                ],
                 queue   => [],
                 enable  => [],
                 disable => [],
@@ -70,6 +73,7 @@ sub main {
             'colors|c=s%',
             'force|f!',
             'long|l',
+            'out|o=s',
             'regexp|r',
             'sleep|s=i',
             'test|T!',

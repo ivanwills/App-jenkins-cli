@@ -42,7 +42,6 @@ sub main {
                 delete  => [],
                 status  => [],
                 conf    => [],
-                config  => [],
                 queue   => [],
                 enable  => [],
                 disable => [],
@@ -71,6 +70,7 @@ sub main {
             'colors|c=s%',
             'force|f!',
             'long|l',
+            'regexp|r',
             'sleep|s=i',
             'test|T!',
             'verbose|v+',
@@ -84,9 +84,10 @@ sub main {
         api_pass => $options->password || _error('Missing password!'),
         test     => $options->test,
         colours  => $options->colors,
+        opt      => $options,
     );
 
-    return $jenkins->$cmd($options, @ARGV) || 0;
+    return $jenkins->$cmd(@ARGV) || 0;
 }
 
 sub _error {

@@ -44,6 +44,10 @@ has colour_map => (
         };
     },
 );
+has opt => (
+    is       => 'rw',
+    required => 1,
+);
 
 sub _jenkins {
     my ($self) = @_;
@@ -65,16 +69,20 @@ sub _alpha_num {
 
 sub ls { shift->list(@_) }
 sub list {
-    my ($self, $opt, $query) = @_;
+    my ($self, $query) = @_;
     my $jenkins = $self->jenkins();
 
-    $self->_action(0, $query, $self->_ls_job($opt, $jenkins));
+    if ( ! defined $self->opt->regexp ) {
+        $self->opt->regexp(1);
+    }
+
+    $self->_action(0, $query, $self->_ls_job($self->opt, $jenkins));
 
     return;
 }
 
 sub start {
-    my ($self, $opt, $job, @extra) = @_;
+    my ($self, $job, @extra) = @_;
     my $jenkins = $self->jenkins();
 
     _error("Must start build with job name!\n") if !$job;
@@ -84,7 +92,7 @@ sub start {
         warn "Job is not buildable!\n";
         return 1;
     }
-    if ( $result->{inQueue} && ! $opt->force ) {
+    if ( $result->{inQueue} && ! $self->opt->force ) {
         warn $result->{queueItem}{why} . "\n";
         warn "View at $result->{url}\n";
         return 0;
@@ -102,7 +110,7 @@ sub start {
 }
 
 sub delete {
-    my ($self, $opt, @jobs) = @_;
+    my ($self, @jobs) = @_;
 
     _error("Job name required for deleting jobs!\n") if !@jobs;
 
@@ -115,7 +123,7 @@ sub delete {
 }
 
 sub status {
-    my ($self, $opt, $job, @extra) = @_;
+    my ($self, $job, @extra) = @_;
     my $jenkins = $self->jenkins();
 
     _error("Job name required to show job status!\n") if !$job;
@@ -125,10 +133,10 @@ sub status {
     my $color = $self->colour_map->{$result->{color}} || [$result->{color}];
     print colored($color, $job), "\n";
 
-    if ($opt->verbose) {
+    if ($self->opt->verbose) {
         for my $build (@{ $result->{builds} }) {
             print "$build->{displayName}\t$build->{result}\t";
-            if ( $opt->verbose > 1 ) {
+            if ( $self->opt->verbose > 1 ) {
                 for my $action (@{ $build->{actions} }) {
                     if ( $action->{lastBuiltRevision} ) {
                         print $action->{lastBuiltRevision}{SHA1};
@@ -144,7 +152,7 @@ sub status {
 
 sub conf { shift->config(@_) }
 sub config {
-    my ($self, $opt, $job, @extra) = @_;
+    my ($self, $job) = @_;
     my $jenkins = $self->jenkins();
 
     _error("Must provide job name to get it's configuration!\n") if !$job;
@@ -155,7 +163,7 @@ sub config {
 }
 
 sub queue {
-    my ($self, $opt, $job, @extra) = @_;
+    my ($self, $job, @extra) = @_;
     my $jenkins = $self->jenkins();
 
     my $queue = $jenkins->build_queue();
@@ -173,7 +181,7 @@ sub queue {
 }
 
 sub create {
-    my ($self, $opt, $job, $config, @extra) = @_;
+    my ($self, $job, $config, @extra) = @_;
     my $jenkins = $self->jenkins();
 
     my $success = $jenkins->create_job($job, $config);
@@ -184,7 +192,7 @@ sub create {
 }
 
 sub load {
-    my ($self, $opt, $job, $config, @extra) = @_;
+    my ($self, $job, $config, @extra) = @_;
     my $jenkins = $self->jenkins();
 
     print Dumper $jenkins->load_statistics();
@@ -193,15 +201,19 @@ sub load {
 }
 
 sub watch {
-    my ($self, $opt, @jobs) = @_;
+    my ($self, @jobs) = @_;
     my $jenkins = $self->jenkins();
 
-    $opt->{sleep} ||= 30;
+    if ( ! defined $self->opt->regexp ) {
+        $self->opt->regexp(1);
+    }
+
+    $self->opt->{sleep} ||= 30;
     my $query = join '|', @jobs;
 
     while (1) {
         my @out;
-        my $ls = $self->_ls_job($opt, $jenkins, 1);
+        my $ls = $self->_ls_job($self->opt, $jenkins, 1);
         print "\n...\n";
 
         $self->_action(0, $query, sub {
@@ -211,40 +223,40 @@ sub watch {
         print "\e[2J\e[0;0H\e[K";
         print "Jenkins Jobs: ", (join ', ', @jobs), "\n\n";
         print sort _alpha_num @out;
-        sleep $opt->{sleep};
+        sleep $self->opt->{sleep};
     }
 
     return;
 }
 
 sub enable {
-    my ($self, $opt, $query) = @_;
+    my ($self, $query) = @_;
 
     my $xsl = path(dist_dir('App-JenkinsCli'), 'enable.xsl');
-    $self->_xslt_actions($opt, $query, $xsl);
+    $self->_xslt_actions($self->opt, $query, $xsl);
 
     return;
 }
 
 sub disable {
-    my ($self, $opt, $query) = @_;
+    my ($self, $query) = @_;
 
     my $xsl = path(dist_dir('App-JenkinsCli'), 'disable.xsl');
-    $self->_xslt_actions($opt, $query, $xsl);
+    $self->_xslt_actions($self->opt, $query, $xsl);
 
     return;
 }
 
 sub change {
-    my ($self, $opt, $query, $xsl) = @_;
+    my ($self, $query, $xsl) = @_;
 
-    $self->_xslt_actions($opt, $query, $xsl);
+    $self->_xslt_actions($self->opt, $query, $xsl);
 
     return;
 }
 
 sub _xslt_actions {
-    my ($self, $opt, $query, $xsl) = @_;
+    my ($self, $query, $xsl) = @_;
     require XML::LibXML;
     require XML::LibXSLT;
 
@@ -265,8 +277,8 @@ sub _xslt_actions {
         my $results = $stylesheet->transform($dom);
         my $output  = $stylesheet->output_as_bytes($results);
 
-        warn "Updating $_->{name}\n" if $opt->{verbose};
-        if ($opt->{test}) {
+        warn "Updating $_->{name}\n" if $self->opt->{verbose};
+        if ($self->opt->{test}) {
             print "$output\n";
         }
         else {
@@ -287,8 +299,10 @@ sub _action {
 
     my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => $depth } });
 
+    my $re = $self->opt->regexp ? qr/$query/ : qr/\A\Q$query\E\Z/;
+
     for my $job (sort _alpha_num @{ $data->{jobs} }) {
-        next if $query && $job->{name} !~ /$query/;
+        next if $query && $job->{name} !~ /$re/;
         local $_ = $job;
 
         $action->();
@@ -298,7 +312,7 @@ sub _action {
 }
 
 sub _ls_job {
-    my ($self, $opt, $jenkins, $return) = @_;
+    my ($self, $jenkins, $return) = @_;
     my $max = 0;
 
     return sub {
@@ -312,7 +326,7 @@ sub _ls_job {
             $extra = '*';
         }
 
-        if ( $opt->{verbose} ) {
+        if ( $self->opt->{verbose} ) {
             eval {
                 my $details = $jenkins->_json_api(
                     ['job', $_->{name}, qw/api json/],
@@ -343,7 +357,7 @@ sub _ls_job {
 
         my $out = colored($color, sprintf "% -${max}s", $name) . " $extra\n";
 
-        if ( $opt->{long} ) {
+        if ( $self->opt->{long} ) {
             $out = "$_->{color} $out";
         }
 
@@ -379,51 +393,51 @@ This documentation refers to App::JenkinsCli version 0.005
 
 =head1 SUBROUTINES/METHODS
 
-=head2 C<ls ($opt, $query)>
+=head2 C<ls ($query)>
 
-=head2 C<list ($opt, $query)>
+=head2 C<list ($query)>
 
 List all jobs, optionally filtering with C<$query>
 
-=head2 C<start ($opt, $job)>
+=head2 C<start ($job)>
 
 Start C<$job>
 
-=head2 C<delete ($opt, $job)>
+=head2 C<delete ($job)>
 
 Delete C<$job>
 
-=head2 C<status ($opt, $job)>
+=head2 C<status ($job)>
 
 Status of C<$job>
 
-=head2 C<enable ($opt, $job)>
+=head2 C<enable ($job)>
 
 enable C<$job>
 
-=head2 C<disable ($opt, $job)>
+=head2 C<disable ($job)>
 
 disable C<$job>
 
-=head2 C<conf ($opt, $job)>
+=head2 C<conf ($job)>
 
-=head2 C<config ($opt, $job)>
+=head2 C<config ($job)>
 
 Show the config of C<$job>
 
-=head2 C<queue ($opt)>
+=head2 C<queue (
 
 Show the queue of running jobs
 
-=head2 C<create ($opt, $job)>
+=head2 C<create ($job)>
 
 Create a new Jenkins job
 
-=head2 C<load ($opt)>
+=head2 C<load ()>
 
 Show the load stats for the server
 
-=head2 C<change ($opt, $query, $xsl)>
+=head2 C<change ($query, $xsl)>
 
 Run the XSLT file (C<$xsl>) over each job matching C<$query> to generate a
 new config which is then sent back to Jenkins.

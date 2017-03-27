@@ -433,7 +433,7 @@ disable C<$job>
 
 Show the config of C<$job>
 
-=head2 C<queue (
+=head2 C<queue ()>
 
 Show the queue of running jobs
 

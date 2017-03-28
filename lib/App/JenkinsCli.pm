@@ -76,7 +76,7 @@ sub list {
         $self->opt->regexp(1);
     }
 
-    $self->_action(0, $query, $self->_ls_job($self->opt, $jenkins));
+    $self->_action(0, $query, $self->_ls_job($jenkins));
 
     return;
 }
@@ -221,7 +221,7 @@ sub watch {
 
     while (1) {
         my @out;
-        my $ls = $self->_ls_job($self->opt, $jenkins, 1);
+        my $ls = $self->_ls_job($jenkins, 1);
         print "\n...\n";
 
         $self->_action(0, $query, sub {
@@ -313,7 +313,7 @@ sub _action {
         next if $query && $job->{name} !~ /$re/;
         local $_ = $job;
 
-        $action->();
+        $self->$action();
     }
 
     return;
@@ -352,6 +352,9 @@ sub _ls_job {
                 else {
                     $extra .= "\tNever run";
                 }
+                1;
+            } or do {
+                warn "Error getting job $_->{name}'s details: $@\n";
             };
             $name = $self->base_url . 'job/' . $name;
         }

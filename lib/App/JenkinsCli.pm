@@ -60,10 +60,10 @@ sub _jenkins {
 };
 
 sub _alpha_num {
-    my $a1 = $a;
-    my $b1 = $b;
-    $a1 =~ s/(\d+)/sprintf "%5d", $1/egxms;
-    $b1 =~ s/(\d+)/sprintf "%5d", $1/egxms;
+    my $a1 = ref $a ? $a->{name} : $a;
+    my $b1 = ref $b ? $b->{name} : $b;
+    $a1 =~ s/(\d+)/sprintf "%05d", $1/egxms;
+    $b1 =~ s/(\d+)/sprintf "%05d", $1/egxms;
     return $a1 cmp $b1;
 }
 

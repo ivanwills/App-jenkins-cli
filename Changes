@@ -1,5 +1,22 @@
 Revision history for App-jenkins-cli
 
+0.006   2017-04-02
+        Updating for release of version 0.006
+        Updated POD (Ivan Wills)
+        Fixed sorting (Ivan Wills)
+        Fixed job listings (Ivan Wills)
+        Fixed pod (Ivan Wills)
+        Changed config to allow multiple jobs (Ivan Wills)
+        Using stored opt rather than passed opt (Ivan Wills)
+        Fixed warning when no color attribute is set (Ivan Wills)
+        Adding long version so build "colour" is show for grepping (Ivan Wills)
+        Fixing issue with builds that have not yet ever been run (Ivan Wills)
+        Configured api calls so that they are much faster (Ivan Wills)
+        Fixing starting jobs (Ivan Wills)
+        Better sorting of jenkins job with respect to numerical numbers (Ivan Wills)
+        Adding better formatting (Ivan Wills)
+        Trying to do auto complete correctly (Ivan Wills)
+
 0.005   2017-02-05
         Updating for release of version 0.005
         Sorting jobs (Ivan Wills)

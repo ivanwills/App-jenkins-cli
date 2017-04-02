@@ -453,6 +453,10 @@ Show the load stats for the server
 Run the XSLT file (C<$xsl>) over each job matching C<$query> to generate a
 new config which is then sent back to Jenkins.
 
+=head2 C<watch ($job)>
+
+Watch jobs to track changes.
+
 =head1 ATTRIBUTES
 
 =over 4
@@ -480,6 +484,10 @@ Internal L<Jenkins::API> object
 =item colours
 
 Mapping of Jenkins states to L<Term::ANSIColor>s
+
+=item opt
+
+User options
 
 =back
 

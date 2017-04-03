@@ -305,7 +305,14 @@ sub _action {
     my ($self, $depth, $query, $action) = @_;
     my $jenkins = $self->jenkins();
 
-    my $data = $jenkins->_json_api([qw/api json/], { extra_params => { depth => $depth } });
+    my $data = eval {
+        $jenkins->_json_api([qw/api json/], { extra_params => { depth => $depth } });
+    };
+
+    if ( ! $data || $@ ) {
+        my $err = $@ ? ": $@" : '';
+        die "No data found! (can't talk to Jenkins Server?)$err\n";
+    }
 
     my $re = $self->opt->regexp ? qr/$query/ : qr/\A\Q$query\E\Z/;
 

@@ -318,7 +318,18 @@ sub _action {
 
     for my $job (sort _alpha_num @{ $data->{jobs} }) {
         next if $query && $job->{name} !~ /$re/;
+
         local $_ = $job;
+
+        if ( $self->opt->{recipient} ) {
+            my $config = $jenkins->project_config($_->{name});
+            require XML::Simple;
+            local $Data::Dumper::Sortkeys = 1;
+            local $Data::Dumper::Indent = 1;
+            my $data = XML::Simple::XMLin($config);
+            my $recipient = $self->opt->{recipient};
+            next if $data->{publishers}{'hudson.tasks.Mailer'}{recipients} !~ /$recipient/;
+        }
 
         $self->$action();
     }

@@ -36,6 +36,7 @@ sub main {
                 ls      => [],
                 list    => [
                     'long|l',
+                    'recipient|R=s',
                     'verbose|v+',
                 ],
                 start   => [],
@@ -54,6 +55,7 @@ sub main {
                 create => [],
                 watch  => [
                     'long|l',
+                    'recipient|R=s',
                     'sleep|s=i',
                     'verbose|v+',
                 ],
@@ -75,6 +77,7 @@ sub main {
             'long|l',
             'out|o=s',
             'regexp|r',
+            'recipient|R=s',
             'sleep|s=i',
             'test|T!',
             'verbose|v+',

@@ -1,5 +1,11 @@
 Revision history for App-jenkins-cli
 
+0.007   2017-04-30
+        Updating for release of version 0.007
+        Added missing requirement (Ivan Wills)
+        Making it possible to also filter my recipient (Ivan Wills)
+        Fixed bad error message (Ivan Wills)
+
 0.006   2017-04-02
         Updating for release of version 0.006
         Updated POD (Ivan Wills)

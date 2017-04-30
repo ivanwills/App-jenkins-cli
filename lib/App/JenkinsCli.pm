@@ -16,7 +16,7 @@ use Term::ANSIColor qw/colored/;
 use File::ShareDir qw/dist_dir/;
 use Path::Tiny;
 
-our $VERSION = "0.006";
+our $VERSION = "0.007";
 
 has [qw/base_url api_key api_pass test/] => (
     is => 'rw',
@@ -407,7 +407,7 @@ App::JenkinsCli - Command line tool for interacting with Jenkins
 
 =head1 VERSION
 
-This documentation refers to App::JenkinsCli version 0.006
+This documentation refers to App::JenkinsCli version 0.007
 
 =head1 SYNOPSIS
 

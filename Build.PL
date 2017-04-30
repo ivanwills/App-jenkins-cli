@@ -16,6 +16,7 @@ my $builder = Module::Build->new(
         'Path::Tiny'     => '0.076',
         'XML::LibXML'    => '2.0',
         'XML::LibXSLT'   => '1.90',
+        'XML::Simple'    => '2.22',
     },
     build_requires => {
         'Test::More'     => 0,

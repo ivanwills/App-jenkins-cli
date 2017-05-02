@@ -380,12 +380,12 @@ sub _ls_job {
                     $duration .= ' sec';
                 }
 
-                $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
+                $extra .= sprintf "% 16s ", scalar localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
                 if ( $details->{lastBuild}{displayName} && $details->{lastBuild}{builtOn} ) {
-                    $extra .= "\t($duration / $details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
+                    $extra .= "($duration / $details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
                 }
                 else {
-                    $extra .= "\tNever run";
+                    $extra .= "Never run";
                 }
                 1;
             } or do {
@@ -397,8 +397,11 @@ sub _ls_job {
         # map "jenkins" colours to real colours
         my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
 
-        if ( length $name > $max ) {
-            $max = length $name;
+        if ( !$max ) {
+            $max = 8 + length $name;
+        }
+        elsif ( length $name > $max ) {
+            $max = 8 + length $name;
         }
 
         my $out = colored($color, sprintf "% -${max}s", $name) . " $extra\n";

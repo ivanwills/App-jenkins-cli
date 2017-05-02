@@ -358,14 +358,31 @@ sub _ls_job {
                     ['job', $_->{name}, qw/api json/],
                     {
                         extra_params => {
-                            depth => 0,
-                            tree => 'lastBuild[timestamp,displayName,builtOn]'
+                            depth => 1,
+                            tree => 'lastBuild[timestamp,displayName,builtOn,duration]'
                         }
                     }
                 );
+                my $duration = $details->{lastBuild}{duration} / 1_000;
+                if ( $duration > 2 * 60 * 60 ) {
+                    $duration = int($duration / 60 / 60) . ' hrs';
+                }
+                elsif ( $duration >= 60 * 60 ) {
+                    $duration = '1 hr ' . (int( ($duration - 60 * 60) / 60 )) . ' min';
+                }
+                elsif ( $duration > 2 * 60 ) {
+                    $duration = int($duration / 60 ) . ' min';
+                }
+                elsif ( $duration >= 60 ) {
+                    $duration = '1 min ' . ($duration - 60) . ' sec';
+                }
+                else {
+                    $duration .= ' sec';
+                }
+
                 $extra .= "\t" . localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
                 if ( $details->{lastBuild}{displayName} && $details->{lastBuild}{builtOn} ) {
-                    $extra .= "\t($details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
+                    $extra .= "\t($duration / $details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
                 }
                 else {
                     $extra .= "\tNever run";

@@ -340,7 +340,7 @@ sub _action {
 
 sub _ls_job {
     my ($self, $jenkins, $return) = @_;
-    my $max = 0;
+    my ($max, $space) = (0, 8);
 
     return sub {
         my $name = $_->{name};
@@ -399,10 +399,11 @@ sub _ls_job {
         my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
 
         if ( !$max ) {
-            $max = 8 + length $name . " $extra_pre";
+            $max = $space + length $name . " $extra_pre";
         }
         elsif ( length $name > $max ) {
-            $max = 8 + length $name . " $extra_pre";
+            $max = $space + length $name . " $extra_pre";
+            $space -= 2 if $space > 2;
         }
 
         my $out = colored($color, sprintf "% -${max}s", "$name $extra_pre") . " $extra_post\n";

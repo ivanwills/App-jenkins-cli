@@ -15,6 +15,7 @@ use Jenkins::API;
 use Term::ANSIColor qw/colored/;
 use File::ShareDir qw/dist_dir/;
 use Path::Tiny;
+use DateTime;
 
 our $VERSION = "0.007";
 
@@ -343,13 +344,13 @@ sub _ls_job {
 
     return sub {
         my $name = $_->{name};
-        my $extra = ' ';
+        my ($extra_pre, $extra_post) = ('') x 2;
 
         if ( ! $_->{color} ) {
             $_->{color} = '';
         }
         elsif ( $_->{color} =~ s/_anime// ) {
-            $extra = '*';
+            $extra_pre = '*';
         }
 
         if ( $self->opt->{verbose} ) {
@@ -380,12 +381,12 @@ sub _ls_job {
                     $duration .= ' sec';
                 }
 
-                $extra .= sprintf "% 16s ", scalar localtime( ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
+                $extra_post .= DateTime->from_epoch( epoch => ( $details->{lastBuild}{timestamp} || 0 ) / 1000 );
                 if ( $details->{lastBuild}{displayName} && $details->{lastBuild}{builtOn} ) {
-                    $extra .= "($duration / $details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
+                    $extra_post .= " ($duration / $details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
                 }
                 else {
-                    $extra .= "Never run";
+                    $extra_post .= "Never run";
                 }
                 1;
             } or do {
@@ -398,13 +399,13 @@ sub _ls_job {
         my $color = $self->colour_map->{$_->{color}} || [$_->{color}];
 
         if ( !$max ) {
-            $max = 8 + length $name;
+            $max = 8 + length $name . " $extra_pre";
         }
         elsif ( length $name > $max ) {
-            $max = 8 + length $name;
+            $max = 8 + length $name . " $extra_pre";
         }
 
-        my $out = colored($color, sprintf "% -${max}s", $name) . " $extra\n";
+        my $out = colored($color, sprintf "% -${max}s", "$name $extra_pre") . " $extra_post\n";
 
         if ( $self->opt->{long} ) {
             $out = "$_->{color} $out";

@@ -15,7 +15,7 @@ use FindBin qw/$Bin/;
 use Path::Tiny;
 use Jenkins::API;
 
-our $VERSION = 0.007;
+our $VERSION = 0.008;
 my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
 
 if ( !@ARGV ) {
@@ -100,7 +100,7 @@ example/rebuild-to-success - <One-line description of commands purpose>
 
 =head1 VERSION
 
-This documentation refers to example/rebuild-to-success version 0.007
+This documentation refers to example/rebuild-to-success version 0.008
 
 =head1 SYNOPSIS
 

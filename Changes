@@ -1,5 +1,15 @@
 Revision history for App-jenkins-cli
 
+0.008   2017-05-07
+        Updating for release of version 0.008
+        Added missing new dependency (Ivan Wills)
+        Better spacing (Ivan Wills)
+        Cleaned up outpus more (Ivan Wills)
+        Setting minimum Perl version to 5.10 (Ivan Wills)
+        Made indentation more consistant (Ivan Wills)
+        Getting the duration in ls -v (Ivan Wills)
+        Fixed Build images (Ivan Wills)
+
 0.007   2017-04-30
         Updating for release of version 0.007
         Added missing requirement (Ivan Wills)

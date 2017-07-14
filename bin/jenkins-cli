@@ -32,7 +32,7 @@ sub main {
                     notbuilt => 'grey12',
                 },
             },
-            sub_command => [
+            sub_command => {
                 ls      => [],
                 list    => [
                     'long|l',
@@ -59,7 +59,7 @@ sub main {
                     'sleep|s=i',
                     'verbose|v+',
                 ],
-            ],
+            },
             auto_complete => sub {
                 my ($option, $auto, $errors) = @_;
                 my $sub_command = $option->cmd;

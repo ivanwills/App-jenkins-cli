@@ -100,7 +100,7 @@ sub main {
         opt      => $options,
     );
 
-    return $jenkins->$cmd(@ARGV) || 0;
+    return $jenkins->$cmd(@{ $opt->files }) || 0;
 }
 
 sub _error {

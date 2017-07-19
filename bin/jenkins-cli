@@ -33,18 +33,29 @@ sub main {
                 },
             },
             sub_command => {
-                ls      => [],
+                ls      => [
+                    'long|l',
+                    'recipient|R=s',
+                    'regexp|r',
+                ],
                 list    => [
                     'long|l',
                     'recipient|R=s',
+                    'regexp|r',
                     'verbose|v+',
                 ],
-                start   => [],
+                start   => [
+                    'force|f!',
+                ],
                 delete  => [],
                 status  => [],
-                conf    => [],
+                conf    => [
+                    'regexp|r',
+                ],
                 config  => [
                     'out|o=s',
+                    'recipient|R=s',
+                    'regexp|r',
                 ],
                 queue   => [],
                 enable  => [],
@@ -56,6 +67,7 @@ sub main {
                 watch  => [
                     'long|l',
                     'recipient|R=s',
+                    'regexp|r',
                     'sleep|s=i',
                     'verbose|v+',
                 ],
@@ -73,12 +85,6 @@ sub main {
             'username|U=s',
             'password|P=s',
             'colors|c=s%',
-            'force|f!',
-            'long|l',
-            'out|o=s',
-            'regexp|r',
-            'recipient|R=s',
-            'sleep|s=i',
             'test|T!',
             'verbose|v+',
         ],

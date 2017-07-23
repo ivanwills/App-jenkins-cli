@@ -58,10 +58,21 @@ sub main {
                     'regexp|r',
                 ],
                 queue   => [],
-                enable  => [],
-                disable => [],
-                change  => [
+                enable  => [
+                    'recipient|R=s',
+                    'regexp|r',
                     'test|T!',
+                ],
+                disable => [
+                    'recipient|R=s',
+                    'regexp|r',
+                    'test|T!',
+                ],
+                change  => [
+                    'recipient|R=s',
+                    'regexp|r',
+                    'test|T!',
+                    'verbose|v+',
                 ],
                 create => [],
                 watch  => [

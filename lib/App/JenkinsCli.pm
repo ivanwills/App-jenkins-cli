@@ -17,7 +17,7 @@ use File::ShareDir qw/dist_dir/;
 use Path::Tiny;
 use DateTime;
 
-our $VERSION = "0.009";
+our $VERSION = "0.010";
 
 has [qw/base_url api_key api_pass test/] => (
     is => 'rw',
@@ -432,7 +432,7 @@ App::JenkinsCli - Command line tool for interacting with Jenkins
 
 =head1 VERSION
 
-This documentation refers to App::JenkinsCli version 0.009
+This documentation refers to App::JenkinsCli version 0.010
 
 =head1 SYNOPSIS
 

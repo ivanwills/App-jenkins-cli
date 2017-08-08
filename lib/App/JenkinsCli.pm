@@ -264,6 +264,21 @@ sub change {
     return;
 }
 
+sub copy {
+    my ($self, $old, $new) = @_;
+    my $jenkins = $self->jenkins();
+
+    _error("Must provide job name to get it's configuration!\n") if !$old;
+
+    my $config = -f $old ? path($old)->slurp : $jenkins->project_config($old);
+
+    my $success = $jenkins->create_job($new, $config);
+
+    print $success ? "Copied $new from $old\n" : "Error copying $new from $old\n";
+
+    return;
+}
+
 sub _xslt_actions {
     my ($self, $query, $xsl) = @_;
     require XML::LibXML;
@@ -420,6 +435,13 @@ sub _ls_job {
         }
         print $out;
     };
+}
+
+sub _error {
+    my ($msg) = @_;
+
+    warn $msg;
+    exit 1;
 }
 
 1;

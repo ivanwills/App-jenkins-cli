@@ -37,6 +37,7 @@ sub main {
                     'long|l',
                     'recipient|R=s',
                     'regexp|r',
+                    'verbose|v+',
                 ],
                 list    => [
                     'long|l',
@@ -75,6 +76,7 @@ sub main {
                     'verbose|v+',
                 ],
                 create => [],
+                copy => [],
                 watch  => [
                     'long|l',
                     'recipient|R=s',

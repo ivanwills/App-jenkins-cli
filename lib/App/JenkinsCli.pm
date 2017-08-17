@@ -193,6 +193,10 @@ sub create {
     my ($self, $job, $config, @extra) = @_;
     my $jenkins = $self->jenkins();
 
+    if ( -f $config ) {
+        $config = path($config)->slurp;
+    }
+
     my $success = $jenkins->create_job($job, $config);
 
     print $success ? "Created $job\n" : "Error creating $job\n";

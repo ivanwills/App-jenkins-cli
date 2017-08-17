@@ -428,7 +428,9 @@ sub _ls_job {
             $space -= 2 if $space > 2;
         }
 
-        my $out = colored($color, sprintf "% -${max}s", "$name $extra_pre") . " $extra_post\n";
+        my $out = $self->opt->{color}
+            ? colored($color, sprintf "% -${max}s", "$name $extra_pre") . " $extra_post\n"
+            : sprintf("% -${max}s", "$name $extra_pre") . " $extra_post\n";
 
         if ( $self->opt->{long} ) {
             $out = "$_->{color} $out";

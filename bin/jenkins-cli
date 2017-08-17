@@ -26,6 +26,7 @@ sub main {
             conf_prefix => '.',
             helper      => 1,
             default     => {
+                color  => 1,
                 colors => {
                     aborted  => 'grey18 on_grey0',
                     disabled => 'grey22',
@@ -98,6 +99,7 @@ sub main {
             'username|U=s',
             'password|P=s',
             'colors|c=s%',
+            'color!',
             'test|T!',
             'verbose|v+',
         ],

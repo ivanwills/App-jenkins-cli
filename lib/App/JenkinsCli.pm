@@ -524,6 +524,10 @@ Show the load stats for the server
 Run the XSLT file (C<$xsl>) over each job matching C<$query> to generate a
 new config which is then sent back to Jenkins.
 
+=head2 C<copy ( $old, $new )>
+
+Copy C<$old> to C<$new>
+
 =head2 C<watch ($job)>
 
 Watch jobs to track changes.

@@ -477,6 +477,8 @@ This documentation refers to App::JenkinsCli version 0.011
 
 =head2 C<ls ($query)>
 
+Alias for list
+
 =head2 C<list ($query)>
 
 List all jobs, optionally filtering with C<$query>

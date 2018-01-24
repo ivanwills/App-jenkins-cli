@@ -166,7 +166,7 @@ This documentation refers to jenkins-cli version 0.011
   history job   Show a jobs build history (not yet implemented)
   config job    Show a config for a job
   change job template.xslt
-                Update jobs(s) with the XSLT template
+                Update job configuration(s) with an XSLT template
   create job config.xml
                 Create a new job from "config.xml"
   watch job(s)  Watch a job or jobs status

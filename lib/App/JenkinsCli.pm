@@ -408,7 +408,7 @@ sub _ls_job {
                     $extra_post .= " ($duration / $details->{lastBuild}{displayName} / $details->{lastBuild}{builtOn})";
                 }
                 else {
-                    $extra_post .= "Never run";
+                    $extra_post .= " Never run";
                 }
                 1;
             } or do {
